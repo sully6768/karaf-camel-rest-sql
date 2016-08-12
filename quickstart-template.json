@@ -19,7 +19,8 @@
     {
       "name": "GIT_REPO",
       "required": true,
-      "description": "Git repository, required"
+      "description": "Git repository, required",
+      "value": "https://github.com/sully6768/karaf-camel-rest-sql.git"
     },
     {
       "name": "GIT_REF",
@@ -43,7 +44,7 @@
     },
     {
       "name": "MAVEN_ARGS",
-      "value": "install -DskipTests -e",
+      "value": "install fabric8:apply -DskipTests -e",
       "description": "Arguments passed to mvn in the build"
     },
     {

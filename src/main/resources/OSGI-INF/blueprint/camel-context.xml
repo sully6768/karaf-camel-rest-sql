@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
     Licensed to the Apache Software Foundation (ASF) under one or more
     contributor license agreements.  See the NOTICE file distributed with
@@ -14,143 +13,86 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
--->
-<blueprint
-    xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="
-             http://www.osgi.org/xmlns/blueprint/v1.0.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
-             ">
+--><blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="              http://www.osgi.org/xmlns/blueprint/v1.0.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd              ">
 
   <!-- to setup camel servlet with OSGi HttpService -->
-    <reference
-        id="httpService"
-        interface="org.osgi.service.http.HttpService" />
+    <reference id="httpService" interface="org.osgi.service.http.HttpService"/>
 
-    <bean
-        class="org.apache.camel.component.servlet.osgi.OsgiServletRegisterer"
-        init-method="register"
-        destroy-method="unregister">
-        <property
-            name="alias"
-            value="/camel-rest-sql" />
-        <property
-            name="httpService"
-            ref="httpService" />
-        <property
-            name="servlet"
-            ref="camelServlet" />
+    <bean class="org.apache.camel.component.servlet.osgi.OsgiServletRegisterer" destroy-method="unregister" init-method="register">
+        <property name="alias" value="/camel-rest-sql"/>
+        <property name="httpService" ref="httpService"/>
+        <property name="servlet" ref="camelServlet"/>
     </bean>
 
-    <bean
-        id="camelServlet"
-        class="org.apache.camel.component.servlet.CamelHttpTransportServlet" />
+    <bean class="org.apache.camel.component.servlet.CamelHttpTransportServlet" id="camelServlet"/>
 
 
   <!-- this is the JDBC data source which uses an in-memory only Apache Derby database -->
-    <bean
-        id="dataSource"
-        class="org.apache.commons.dbcp.BasicDataSource"
-        destroy-method="close">
-        <property
-            name="driverClassName"
-            value="org.apache.derby.jdbc.EmbeddedDriver" />
-        <property
-            name="url"
-            value="jdbc:derby:memory:orders;create=true" />
-        <property
-            name="username"
-            value="" />
-        <property
-            name="password"
-            value="" />
+    <bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="dataSource">
+        <property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+        <property name="url" value="jdbc:derby:memory:orders;create=true"/>
+        <property name="username" value=""/>
+        <property name="password" value=""/>
     </bean>
 
   <!-- bean which creates/destroys the database table for this example -->
-    <bean
-        id="initDatabase"
-        class="com.redhat.demo.karaf.camel.rest.sql.DatabaseBean"
-        init-method="create"
-        destroy-method="destroy">
-        <property
-            name="dataSource"
-            ref="dataSource" />
+    <bean class="com.redhat.demo.karaf.camel.rest.sql.DatabaseBean" destroy-method="destroy" id="initDatabase" init-method="create">
+        <property name="dataSource" ref="dataSource"/>
     </bean>
 
   <!-- configure the Camel SQL component to use the JDBC data source -->
-    <bean
-        id="sql"
-        class="org.apache.camel.component.sql.SqlComponent">
-        <property
-            name="dataSource"
-            ref="dataSource" />
+    <bean class="org.apache.camel.component.sql.SqlComponent" id="sql">
+        <property name="dataSource" ref="dataSource"/>
     </bean>
 
 
   <!-- order bean is our business logic bean that creates new orders -->
-    <bean
-        id="orderBean"
-        class="com.redhat.demo.karaf.camel.rest.sql.OrderBean" />
+    <bean class="com.redhat.demo.karaf.camel.rest.sql.OrderBean" id="orderBean"/>
 
 
   <!-- here is Camel configured with a number of routes -->
-    <camelContext xmlns="http://camel.apache.org/schema/blueprint">
+    <camelContext xmlns="http://camel.apache.org/schema/blueprint" id="camelContext-5e5b3ba1-747f-4bea-8bb2-8e0800d4c8b6">
 
     <!-- use Camel property placeholder loaded from the given file -->
-        <propertyPlaceholder
-            id="placeholder"
-            location="classpath:sql.properties" />
+        <propertyPlaceholder id="placeholder" location="classpath:sql.properties"/>
 
-        <restConfiguration
-            component="servlet"
-            bindingMode="json"
-            contextPath="/camel-rest-sql"
-            port="{{env:HTTP_PORT:8181}}" />
+        <restConfiguration bindingMode="json" component="servlet" contextPath="/camel-rest-sql" port="{{env:HTTP_PORT:8181}}"/>
 
     <!-- rest service for books -->
-        <rest
-            path="/books"
-            consumes="application/json"
-            produces="application/json">
+        <rest consumes="application/json" path="/books" produces="application/json">
 
       <!-- rest service that fetches names of all books -->
-            <get
-                uri="/"
-                outType="com.redhat.demo.karaf.camel.rest.sql.model.Book">
-                <to uri="sql:{{sql.selectBooks}}?outputType=SelectList&amp;outputClass=com.redhat.demo.karaf.camel.rest.sql.model.Book" />
+            <get outType="com.redhat.demo.karaf.camel.rest.sql.model.Book" uri="/">
+                <to uri="sql:{{sql.selectBooks}}?outputType=SelectList&amp;outputClass=com.redhat.demo.karaf.camel.rest.sql.model.Book"/>
             </get>
 
       <!-- rest service that fetches an order by id -->
-            <get
-                uri="order/{id}"
-                outType="com.redhat.demo.karaf.camel.rest.sql.model.Order">
-                <to uri="sql:{{sql.selectOrder}}?outputType=SelectOne&amp;outputClass=com.redhat.demo.karaf.camel.rest.sql.model.Order" />
+            <get outType="com.redhat.demo.karaf.camel.rest.sql.model.Order" uri="order/{id}">
+                <to uri="sql:{{sql.selectOrder}}?outputType=SelectOne&amp;outputClass=com.redhat.demo.karaf.camel.rest.sql.model.Order"/>
             </get>
         </rest>
 
     <!-- route that generate new orders and insert them in the database -->
         <route id="generateOrder-route">
-            <from uri="timer:foo?delay=1s&amp;period=10s" />
-            <transform>
-                <method
-                    ref="orderBean"
-                    method="generateOrder" />
+            
+            <from id="_from1" uri="timer:foo?delay=1s&amp;period=10s"/>
+            <transform id="_transform1">
+                <method method="generateOrder" ref="orderBean"/>
             </transform>
-            <to uri="sql:{{sql.insertOrder}}" />
-            <log message="Inserted new order ${body.id}" />
+            <to id="_to1" uri="sql:{{sql.insertOrder}}"/>
+         <log id="_log1" message="Inserted new order ${body.id}"/>
         </route>
 
     <!-- route that process the orders by picking up new rows from the database
          and when done processing then update the row to mark it as processed -->
         <route id="processOrder-route">
-            <from uri="sql:{{sql.selectUnprocessedOrders}}?consumer.onConsume={{sql.markOrder}}" />
-            <transform>
-                <method
-                    ref="orderBean"
-                    method="rowToOrder" />
+            
+            <from id="_from2" uri="sql:{{sql.selectUnprocessedOrders}}?consumer.onConsume={{sql.markOrder}}"/>
+            <transform id="_transform2">
+                <method method="rowToOrder" ref="orderBean"/>
             </transform>
-            <to uri="bean:orderBean?method=processOrder" />
-            <log message="${body}" />
+            <to id="_to2" uri="bean:orderBean?method=processOrder"/>
+         <log id="_log2" message="${body}"/>
         </route>
 
     </camelContext>

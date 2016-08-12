@@ -87,6 +87,7 @@ objects:
           kind: ImageStreamTag
           name: fis-karaf-openshift:${BUILDER_VERSION}
           namespace: ${IMAGE_STREAM_NAMESPACE}
+        incremental: true
       type: Source
     triggers:
     - github:
@@ -171,6 +172,7 @@ parameters:
 - description: Git repository, required
   name: GIT_REPO
   required: true
+  value: https://github.com/sully6768/karaf-camel-rest-sql.git
 - description: Git ref to build
   name: GIT_REF
   value: master
@@ -185,7 +187,7 @@ parameters:
   value: 2.2.0.redhat-079
 - description: Arguments passed to mvn in the build
   name: MAVEN_ARGS
-  value: install -DskipTests -e
+  value: install -DskipTests -e fabric8:apply
 - description: Extra arguments passed to mvn, e.g. for multi-module builds
   name: MAVEN_ARGS_APPEND
 - description: Maven build directory
