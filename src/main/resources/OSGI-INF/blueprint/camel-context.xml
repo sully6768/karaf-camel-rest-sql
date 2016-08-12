@@ -145,7 +145,7 @@
                 uri="bean:orderBean?method=processOrder" />
             <log
                 id="_log2"
-                message="Processing Order: ${body}" />
+                message="${body}" />
         </route>
     </camelContext>
 </blueprint>
