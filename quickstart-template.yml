@@ -6,7 +6,7 @@ metadata:
     description: "Karaf Camel REST SQL QuickStart"
     iconClass: icon-java
   labels: {}
-  name: s2i-quickstart-karaf-camel-rest-sql
+  name: qs-karaf-camel-rest-sql
 objects:
 - apiVersion: v1
   kind: Service
@@ -167,7 +167,7 @@ objects:
 parameters:
 - description: Application Name
   name: APP_NAME
-  value: s2i-quickstart-karaf-camel-rest-sql
+  value: qs-karaf-camel-rest-sql
 - description: Git repository, required
   name: GIT_REPO
   required: true
@@ -176,7 +176,7 @@ parameters:
   value: master
 - description: Exposed Service name
   name: SERVICE_NAME
-  value: s2i-qs-karaf-camel-rest-sql
+  value: qs-karaf-camel-rest-sql
 - description: Builder version
   name: BUILDER_VERSION
   value: '1.0'

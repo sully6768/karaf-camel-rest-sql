@@ -8,12 +8,12 @@
       "iconClass": "icon-java"
     },
     "labels": {},
-    "name": "s2i-quickstart-karaf-camel-rest-sql"
+    "name": "qs-karaf-camel-rest-sql"
   },
   "parameters": [
     {
       "name": "APP_NAME",
-      "value": "s2i-quickstart-karaf-camel-rest-sql",
+      "value": "qs-karaf-camel-rest-sql",
       "description": "Application Name"
     },
     {
@@ -28,7 +28,7 @@
     },
     {
       "name": "SERVICE_NAME",
-      "value": "s2i-qs-karaf-camel-rest-sql",
+      "value": "qs-karaf-camel-rest-sql",
       "description": "Exposed Service name"
     },
     {
