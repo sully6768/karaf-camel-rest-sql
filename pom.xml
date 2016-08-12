@@ -204,8 +204,8 @@
                 </executions>
             </plugin>
 
-      <!-- 2. create karaf assembly -->
-      <!-- karaf-maven-plugin creates custom microservice distribution -->
+        <!-- 2. create karaf assembly -->
+        <!-- karaf-maven-plugin creates custom microservice distribution -->
             <plugin>
                 <groupId>org.apache.karaf.tooling</groupId>
                 <artifactId>karaf-maven-plugin</artifactId>
@@ -270,7 +270,7 @@
                                         xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
                                         <id>${project.artifactId}</id>
                                         <files>
-                      <!-- copy karaf archive -->
+                                    <!-- copy karaf archive -->
                                             <file>
                                                 <source>${project.build.directory}/${project.artifactId}-${project.version}.tar.gz</source>
                                                 <outputDirectory>/</outputDirectory>
