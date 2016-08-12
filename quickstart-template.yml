@@ -3,7 +3,7 @@ kind: Template
 labels: {}
 metadata:
   annotations:
-    description: "# Karaf Camel Rest SQL"
+    description: "Karaf Camel REST SQL QuickStart"
     iconClass: icon-java
   labels: {}
   name: s2i-quickstart-karaf-camel-rest-sql
